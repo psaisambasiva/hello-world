@@ -1,0 +1,245 @@
+%{
+
+	#include "y.tab.h" 
+
+	#include "stdio.h"
+
+	extern void yyerror(const char*);
+
+%}
+
+
+
+SingleLineComment	\/\/.* 
+
+MultiLineComment	\/\*.*?\*\/
+
+Identifier		[_a-zA-Z][_a-zA-Z0-9]*
+
+Digits 		        [0-9]+
+
+Integer		        0|[1-9]{Digits}*
+
+FractionalConstant	([0-9]*?\.{Digits})|({Digits}\.)
+
+Exponent			[eE][+-]?{Digits}
+
+FloatingConstant	{FractionalConstant}{Exponent}?|{Digits}{Exponent}
+
+EnumerationConstant	{Identifier}
+
+EscapeSequence		\\['"?\\abfnrtv]
+
+Cchar			[^'\\\n]|{EscapeSequence}
+
+CcharSequence		{Cchar}+
+
+CharacterConstant	\'{CcharSequence}\'
+
+Schar			[^"\\\n]|{EscapeSequence}
+
+ScharSequence		{Schar}+
+
+StringLiteral		\"{ScharSequence}?\"
+
+
+
+%%
+
+"auto"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return AUTO;}
+
+"break"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return BREAK;}
+
+"case"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return CASE;}
+
+"char"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return CHAR;}
+
+"const"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return CONST;}
+
+"continue"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return CONTINUE;}
+
+"default"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return DEFAULT;}
+
+"do"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return DO;}
+
+"double"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return DOUBLE;}
+
+"else"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return ELSE;}
+
+"enum"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return ENUM;}
+
+"extern"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return EXTERN;}
+
+"float"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return FLOAT;}
+
+"for"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return FOR;}
+
+"goto"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return GOTO;}
+
+"if"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return IF;}
+
+"inline"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return INLINE;}
+
+"int"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return INT;}
+
+"long"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return LONG;}
+
+"register"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return REGISTER;}
+
+"restrict"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return RESTRICT;}
+
+"return"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return RETURN;}
+
+"short"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return SHORT;}
+
+"signed"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return SIGNED;}
+
+"sizeof"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return SIZEOF;}
+
+"static"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return STATIC;}
+
+"struct"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return STRUCT;}
+
+"switch"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return SWITCH;}
+
+"typedef"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return TYPEDEF;}
+
+"union"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return UNION;}
+
+"unsigned"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return UNSIGNED;}
+
+"void"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return VOID;}
+
+"volatile"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return VOLATILE;}
+
+"while"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return WHILE;}
+
+"_Bool"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return BOOL;}
+
+"_Complex"			{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return COMPLEX;}
+
+"_Imaginary"		{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return IMAGINARY;}
+
+{SingleLineComment} {printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);}
+
+{MultiLineComment}	{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);}
+
+{Identifier}		{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);
+
+					yylval.id = yytext;return IDENTIFIER;}
+
+{Integer}		    {printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);
+
+					yylval.intval=atoi(yytext);
+
+					 return INT_NO;}
+
+{FloatingConstant}	{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);
+
+					yylval.floatval=atof(yytext);
+
+                     return FLOAT_NO;}
+
+{CharacterConstant}	{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);
+
+					yylval.charval=yytext[0];return CHARACTER;}
+
+{StringLiteral}	{	printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);
+
+					yylval.strlit=yytext;return STRING;}
+
+"["					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('[');}
+
+"]"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return(']');}
+
+"("					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('(');}
+
+")"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return(')');}
+
+"{"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('{');}
+
+"}"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('}');}
+
+"."					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('.');}
+
+"->"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return ARROW;}
+
+"++"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return INCREMENT;}
+
+"--"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return DECREMENT;}
+
+"&"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('&');}
+
+"*"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('*');}
+
+"+"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('+');}
+
+"-"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('-'); }
+
+"~"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('~');}
+
+"!"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('!');}
+
+"/"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('/');}
+
+"%"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('%');} 
+
+"<<"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return LEFT_SHIFT;}
+
+">>"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return RIGHT_SHIFT;}
+
+"<"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('<');}
+
+">"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('>');}
+
+"<="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return LESS_THAN_EQUALTO;}
+
+">="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return GREATER_THAN_EQUALTO;}
+
+"=="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return DOUBLE_EQUAL;}
+
+"!="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return NOT_EQUAL;}
+
+"^"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('^');}
+
+"|"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('|');}
+
+"&&"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return BINARY_AND;}
+
+"||"				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return BINARY_OR;}
+
+"?"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('?');}
+
+":"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return(':');}
+
+";"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return(';');}
+
+"..."				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return ELLIPSIS;}
+
+"="					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return EQUAL;}
+
+"*="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return STAR_EQUAL;}
+
+"/="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return SLASH_EQUAL;}
+
+"%="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return PERCENTILE_EQUAL;}
+
+"+="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return PLUS_EQUAL;}
+
+"-="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return MINUS_EQUAL;}
+
+"<<="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return LEFT_SHIFT_EQUAL;}
+
+">>="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return RIGHT_SHIFT_EQUAL;}
+
+"&="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return AND_EQUAL;}
+
+"^="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return XOR_EQUAL;}
+
+"|="				{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return OR_EQUAL;}
+
+","					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return(',');}
+
+"#"					{printf("<<<<<<<<<<<<<<<<<<<<<<<< LEXICON: %s >>>>>>>>>>>>>>>>>>>\n",yytext);return('#');}
+
+%%
